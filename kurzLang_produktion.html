@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kurz_lang — 8B Filmstudios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:     #0d1a0f;
+  --forest:  #1e3a22;
+  --moss:    #2d5233;
+  --sage:    #5a8a62;
+  --chrome:  #8aaa8e;
+  --mist:    #c4d8c6;
+  --gold:    #c8a96e;
+  --gold-lt: #e2c99a;
+  --ivory:   #f4f0e8;
+  --paper:   #faf8f4;
+  --white:   #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+header {
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.logo-sub {
+  color: var(--chrome);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+nav {
+  display: flex;
+  gap: 0;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--chrome);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  padding: 0 22px;
+  height: 64px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+.nav-btn:hover { color: var(--ivory); }
+.nav-btn.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--chrome);
+  letter-spacing: 1px;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── LAYOUT ─────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+/* ── LEFT PANEL ──────────────────────────────── */
+.left-panel {
+  background: var(--ink);
+  border-right: 1px solid rgba(200,169,110,0.12);
+  padding: 40px 0 40px;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.left-panel::-webkit-scrollbar { display: none; }
+
+.panel-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sage);
+  padding: 0 32px;
+  margin-bottom: 20px;
+}
+
+.scene-link {
+  display: block;
+  padding: 14px 32px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.18s ease;
+  text-decoration: none;
+}
+
+.scene-link:hover { background: rgba(255,255,255,0.03); }
+
+.scene-link.active {
+  border-left-color: var(--gold);
+  background: rgba(200,169,110,0.06);
+}
+
+.sl-tag {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 4px;
+}
+
+.sl-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: var(--ivory);
+  line-height: 1.3;
+}
+
+.scene-link.active .sl-name { color: var(--gold-lt); }
+
+.sl-loc {
+  font-size: 11px;
+  color: var(--chrome);
+  margin-top: 3px;
+}
+
+.panel-divider {
+  height: 1px;
+  background: rgba(200,169,110,0.1);
+  margin: 24px 32px;
+}
+
+/* ── CONTENT ─────────────────────────────────── */
+.content {
+  padding: 60px 72px;
+  max-width: 900px;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── PAGE HEADINGS ───────────────────────────── */
+.page-kicker {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--chrome);
+  font-style: italic;
+  margin-bottom: 48px;
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  margin-bottom: 48px;
+  opacity: 0.5;
+}
+
+/* ── DREHBUCH ────────────────────────────────── */
+.script-block {
+  margin-bottom: 56px;
+  scroll-margin-top: 80px;
+}
+
+.sb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sb-num {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.sb-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.sb-loc {
+  font-size: 11px;
+  color: var(--chrome);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.sb-rule {
+  height: 1px;
+  background: var(--mist);
+  margin-bottom: 24px;
+}
+
+.sb-direction {
+  font-size: 13px;
+  color: var(--sage);
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  border-left: 2px solid var(--mist);
+}
+
+.sb-narrator {
+  padding: 16px 0;
+  border-top: 1px solid var(--ivory);
+}
+
+.sb-narrator-char {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--chrome);
+  margin-bottom: 6px;
+}
+
+.sb-narrator-text {
+  font-size: 13px;
+  color: var(--moss);
+  line-height: 1.85;
+}
+
+.sb-dialog {
+  margin: 16px 0;
+  padding: 20px 28px;
+  background: var(--ivory);
+  border-radius: 2px;
+}
+
+.sb-dialog-char {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.sb-dialog-text {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+.role-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(200,169,110,0.35);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 0 4px 6px 0;
+}
+
+/* ── ROLLEN ──────────────────────────────────── */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.role-card {
+  background: var(--white);
+  border: 1px solid var(--ivory);
+  border-radius: 3px;
+  padding: 28px 28px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-top: 3px solid transparent;
+}
+
+.role-card:hover {
+  border-top-color: var(--gold);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
+}
+
+.role-card.selected {
+  border-top-color: var(--gold);
+  background: var(--ink);
+}
+
+.rc-type {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.rc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.role-card.selected .rc-name { color: var(--gold-lt); }
+.role-card.selected .rc-desc { color: var(--chrome); }
+.role-card.selected .rc-scenes { color: var(--sage); border-color: rgba(255,255,255,0.1); }
+
+.rc-age {
+  font-size: 12px;
+  color: var(--chrome);
+  margin-bottom: 14px;
+}
+
+.rc-desc {
+  font-size: 13px;
+  color: var(--moss);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.rc-scenes {
+  font-size: 11px;
+  color: var(--chrome);
+  border-top: 1px solid var(--ivory);
+  padding-top: 14px;
+  line-height: 1.6;
+}
+
+.role-result {
+  margin-top: 8px;
+}
+
+.role-result-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.role-result-sub {
+  font-size: 12px;
+  color: var(--chrome);
+  margin-bottom: 32px;
+  font-style: italic;
+}
+
+.clear-filter {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--chrome);
+  border-bottom: 1px solid var(--mist);
+  cursor: pointer;
+  padding-bottom: 2px;
+  margin-bottom: 32px;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.15s;
+}
+
+.clear-filter:hover { color: var(--ink); }
+
+/* ── DREHTAGE ────────────────────────────────── */
+.day-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--gold);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  transition: background 0.2s;
+  margin-bottom: 40px;
+}
+
+.day-add-btn:hover { background: var(--forest); }
+
+.day-card {
+  background: var(--white);
+  border: 1px solid var(--ivory);
+  border-radius: 3px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.day-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+.day-card-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 32px;
+  cursor: pointer;
+}
+
+.day-num-badge {
+  width: 44px; height: 44px;
+  background: var(--ink);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.day-info-date {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.day-info-sub {
+  font-size: 12px;
+  color: var(--chrome);
+  line-height: 1.5;
+}
+
+.day-status {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+
+.status-planned { background: rgba(90,138,98,0.12); color: var(--sage); }
+.status-done    { background: rgba(200,169,110,0.12); color: var(--gold); }
+.status-pending { background: rgba(180,80,80,0.1); color: #c06060; }
+
+.day-chevron {
+  color: var(--chrome);
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.day-card.open .day-chevron { transform: rotate(180deg); }
+
+.day-body {
+  display: none;
+  border-top: 1px solid var(--ivory);
+  padding: 28px 32px;
+  background: var(--paper);
+}
+
+.day-card.open .day-body { display: block; }
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  margin-bottom: 20px;
+}
+
+.field-grid .span2 { grid-column: 1/-1; }
+
+.field-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--chrome);
+  margin-bottom: 6px;
+}
+
+.field-input, .field-select, .field-textarea {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--ivory);
+  border-radius: 2px;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--gold);
+}
+
+.field-textarea { resize: vertical; min-height: 72px; }
+.field-select { cursor: pointer; appearance: none; }
+
+.scene-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--mist);
+  color: var(--chrome);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.stag:hover { border-color: var(--sage); color: var(--forest); }
+.stag.on { background: var(--ink); border-color: var(--ink); color: var(--gold); }
+
+.day-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ivory);
+}
+
+.act-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.act-btn-primary {
+  background: var(--ink);
+  color: var(--gold);
+  border: none;
+}
+
+.act-btn-primary:hover { background: var(--forest); }
+
+.act-btn-ghost {
+  background: none;
+  border: 1px solid var(--mist);
+  color: var(--chrome);
+}
+
+.act-btn-ghost:hover { border-color: var(--chrome); color: var(--ink); }
+
+.act-btn-danger {
+  background: none;
+  border: 1px solid #e0c0c0;
+  color: #c08080;
+  margin-left: auto;
+}
+
+.act-btn-danger:hover { background: #fff0f0; }
+
+/* add panel */
+.add-panel {
+  background: var(--white);
+  border: 1px solid var(--ivory);
+  border-top: 3px solid var(--gold);
+  border-radius: 3px;
+  padding: 32px;
+  margin-bottom: 24px;
+  display: none;
+}
+
+.add-panel.open { display: block; }
+
+.add-panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+/* ── MATERIALIEN ─────────────────────────────── */
+.scene-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.scene-chip {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 1px solid var(--mist);
+  color: var(--chrome);
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--white);
+}
+
+.scene-chip:hover { border-color: var(--sage); color: var(--forest); }
+.scene-chip.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold);
+}
+
+.mat-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.mat-section-sub {
+  font-size: 12px;
+  color: var(--chrome);
+  font-style: italic;
+  margin-bottom: 32px;
+}
+
+.mat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.mat-cat {
+  background: var(--white);
+  border: 1px solid var(--ivory);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.mat-cat-head {
+  background: var(--ink);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mat-cat-icon { font-size: 16px; }
+
+.mat-cat-name {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.mat-items { padding: 4px 0; }
+
+.mat-item {
+  padding: 9px 20px;
+  font-size: 13px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--paper);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mat-item:last-child { border-bottom: none; }
+
+.mat-bullet {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* ── EMPTY ───────────────────────────────────── */
+.empty {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--chrome);
+}
+
+.empty-icon { font-size: 36px; margin-bottom: 16px; opacity: 0.4; }
+
+.empty-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+
+.empty-sub { font-size: 13px; color: var(--chrome); }
+
+/* ── LOGIN OVERLAY ───────────────────────────── */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.login-box {
+  text-align: center;
+  width: 340px;
+}
+
+.login-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.login-sub {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--chrome);
+  margin-bottom: 48px;
+}
+
+.login-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.login-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,169,110,0.25);
+  border-radius: 2px;
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 14px 18px;
+  outline: none;
+  letter-spacing: 3px;
+  text-align: center;
+  transition: border-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.login-input:focus { border-color: var(--gold); }
+
+.login-btn {
+  width: 100%;
+  background: var(--gold);
+  border: none;
+  border-radius: 2px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px;
+  transition: background 0.2s;
+}
+
+.login-btn:hover { background: var(--gold-lt); }
+
+.login-error {
+  font-size: 12px;
+  color: #c08080;
+  margin-top: 14px;
+  min-height: 18px;
+  letter-spacing: 0.5px;
+}
+
+.login-decoration {
+  position: absolute;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.3), transparent);
+  top: 0; bottom: 0;
+  left: 50%;
+  pointer-events: none;
+}
+
+/* ── TOAST ───────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--ink);
+  color: var(--gold);
+  padding: 14px 24px;
+  border-radius: 2px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transform: translateY(16px);
+  opacity: 0;
+  transition: all 0.25s ease;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">kurz_lang</div>
+    <div class="logo-sub">8B Filmstudios · FF27</div>
+  </div>
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('drehbuch')">Drehbuch</button>
+    <button class="nav-btn" onclick="switchTab('rollen')">Rollen</button>
+    <button class="nav-btn" onclick="switchTab('drehtage')">Drehtage</button>
+    <button class="nav-btn" onclick="switchTab('material')">Material</button>
+  </nav>
+  <div class="header-status">
+    <div class="status-dot"></div>
+    Produktion läuft
+  </div>
+</header>
+
+<div class="shell">
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="panel-label">Szenen</div>
+    <div id="sideScenes"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- DREHBUCH -->
+    <div class="view active" id="view-drehbuch">
+      <div class="page-kicker">8B Filmstudios · Drehbuch FF27</div>
+      <div class="page-title">kurz_lang</div>
+      <div class="page-subtitle">Ein Kurzfilm über das Senden, das Schweigen und das Zuhören.</div>
+      <div class="rule"></div>
+      <div id="scriptContent"></div>
+    </div>
+
+    <!-- ROLLEN -->
+    <div class="view" id="view-rollen">
+      <div class="page-kicker">Besetzung</div>
+      <div class="page-title">Rollen</div>
+      <div class="page-subtitle">Klick auf eine Rolle, um alle ihre Szenen zu sehen.</div>
+      <div class="rule"></div>
+      <div class="roles-grid" id="rolesGrid"></div>
+      <div id="roleResult"></div>
+    </div>
+
+    <!-- DREHTAGE -->
+    <div class="view" id="view-drehtage">
+      <div class="page-kicker">Planung</div>
+      <div class="page-title">Drehtage</div>
+      <div class="page-subtitle">Lege Drehtage an, weise Szenen zu und behalte den Überblick.</div>
+      <div class="rule"></div>
+
+      <button class="day-add-btn" onclick="toggleAdd()">
+        <span style="font-size:16px">+</span> Neuen Drehtag anlegen
+      </button>
+
+      <div class="add-panel" id="addPanel">
+        <div class="add-panel-title">Neuer Drehtag</div>
+        <div class="field-grid">
+          <div>
+            <div class="field-label">Datum</div>
+            <input class="field-input" type="date" id="nDate">
+          </div>
+          <div>
+            <div class="field-label">Drehort</div>
+            <input class="field-input" type="text" id="nLoc" placeholder="z.B. Marienplatz München">
+          </div>
+          <div>
+            <div class="field-label">Beginn</div>
+            <input class="field-input" type="time" id="nStart" value="08:00">
+          </div>
+          <div>
+            <div class="field-label">Ende</div>
+            <input class="field-input" type="time" id="nEnd" value="18:00">
+          </div>
+          <div class="span2">
+            <div class="field-label">Szenen an diesem Tag</div>
+            <div class="scene-tags-wrap" id="newSceneTags"></div>
+          </div>
+          <div class="span2">
+            <div class="field-label">Notizen</div>
+            <textarea class="field-textarea" id="nNotes" placeholder="Hinweise für Crew, Wetterabhängigkeit, Besonderheiten…"></textarea>
+          </div>
+        </div>
+        <div class="day-actions" style="border-top:none; margin-top:0; padding-top:0;">
+          <button class="act-btn act-btn-primary" onclick="addDay()">Speichern</button>
+          <button class="act-btn act-btn-ghost" onclick="toggleAdd()">Abbrechen</button>
+        </div>
+      </div>
+
+      <div id="daysList"></div>
+    </div>
+
+    <!-- MATERIAL -->
+    <div class="view" id="view-material">
+      <div class="page-kicker">Produktion</div>
+      <div class="page-title">Materialien</div>
+      <div class="page-subtitle">Szene auswählen — die Materialliste erscheint sofort.</div>
+      <div class="rule"></div>
+      <div class="scene-strip" id="matPicker"></div>
+      <div id="matContent">
+        <div class="empty">
+          <div class="empty-icon">✦</div>
+          <div class="empty-text">Keine Szene gewählt</div>
+          <div class="empty-sub">Wähle oben eine Szene aus.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-decoration"></div>
+  <div class="login-box">
+    <div class="login-logo">kurz_lang</div>
+    <div class="login-sub">8B Filmstudios · Produktion</div>
+    <div class="login-label">Teampasswort</div>
+    <input class="login-input" type="password" id="pwInput" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkLogin()">
+    <button class="login-btn" onclick="checkLogin()">Eintreten</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const SCENES = [
+  {
+    id:'vorspann', tag:'Vorspann', title:'Weltall / Arecibo-Signal', loc:'CGI · Studio',
+    roles:[],
+    direction:'Weltall, Sterne. Erst Stille, dann mechanisches Piepen und visualisierte Wellen.',
+    blocks:[
+      {t:'narrator', char:'Sprecher', text:'Am 16. November 1974 sendete die Menschheit ihre erste Botschaft ins All, gerichtet an den Sternenhaufen M13, 25 000 Lichtjahre entfernt. Es ist eine Flut an Informationen, ein Ruf in die Leere, doch niemand antwortete, niemand, bis jetzt.'},
+      {t:'direction', text:'Verblassen — Überleitung.'}
+    ]
+  },
+  {
+    id:'szene1', tag:'Szene 1', title:'Marienplatz — Vorstellung', loc:'Marienplatz, München',
+    roles:['Erzähler','Sandra','Fred','Elias'],
+    direction:'Marienplatz, stürmische Menschenmenge. Kamera fokussiert nacheinander Sandra (Kletterin), Fred (Schwimmer) und Elias — je mit Freeze-Frame und Beschriftung.',
+    blocks:[
+      {t:'narrator', char:'Erzähler', text:'Menschen sind verschieden.'},
+      {t:'direction', text:'Kletterhalle — Sandra greift nach einem Griff, verfehlt ihn.'},
+      {t:'narrator', char:'Erzähler', text:'Sie haben verschiedene Hobbys.'},
+      {t:'direction', text:'Schwimmbad — Fred springt vom Startblock.'},
+      {t:'narrator', char:'Erzähler', text:'Sie mögen andere Sachen.'},
+      {t:'direction', text:'Elias steht allein, zu viele Tüten, ein Ei fällt. Zoom auf das Ei.'},
+      {t:'narrator', char:'Erzähler', text:'Doch manche unterscheiden sich noch mehr von anderen. Sie gehören nicht richtig dazu. Sie sind einfach... nicht integriert, nicht passend.'},
+      {t:'narrator', char:'Erzähler', text:'Elias ist 27 Jahre alt und studiert Informatik. Das macht ihm keine Probleme, aber ihn bedrückt anderes. Er findet einfach nicht seinen Platz in der Gesellschaft.'},
+      {t:'direction', text:'Ei landet mit Knall auf dem Boden.'}
+    ]
+  },
+  {
+    id:'szene2', tag:'Szene 2', title:'Flashback — Kindheit', loc:'Spielplatz · Außen',
+    roles:['Erzähler','Junger Elias','Junger Raudi'],
+    direction:'Flashback. Kinder spielen Fangen, spannend geschnitten. Junger Elias hockt am Rand.',
+    blocks:[
+      {t:'dialog', char:'Junger Elias', text:'Darf ich mitspielen?'},
+      {t:'dialog', char:'Junger Raudi', text:'Nein.'},
+      {t:'dialog', char:'Junger Elias', text:'Warum nicht?'},
+      {t:'dialog', char:'Junger Raudi', text:'Wir spielen nicht mit „Darf ich mitspielen"-Leuten. Wir spielen nicht mit Losern!'},
+      {t:'direction', text:'Alle lachen. Elias joggt weinend durch die Stadt.'},
+      {t:'narrator', char:'Erzähler', text:'Einstecken, immer nur einstecken. Aber irgendwann ist man so voll mit schlechten Erinnerungen, dass man es nicht mehr aushält. Dass man einen Ort suchen muss, wo man sie loswerden kann. Einen Ort für schlechte Erinnerungen.'}
+    ]
+  },
+  {
+    id:'szene3', tag:'Szene 3', title:'Die Sendungen', loc:'Elias\' Wohnung',
+    roles:['Erzähler','Elias'],
+    direction:'Elias zündet eine Kerze an, hält ein Foto des Universums. Er schreibt Morsezeichen-Nachrichten und schickt sie ab — Tag für Tag.',
+    blocks:[
+      {t:'narrator', char:'Erzähler', text:'Strich. Strich. Punkt. Strich. Zeichen für Zeichen verfasst Elias eine Nachricht. Und verschickt sie. An niemand, in die Leere, ins Nirgendwo. Tag für Tag. Und glaubt vielleicht sogar selbst, dass da etwas ist, was diese Briefe liest. Süß, oder?'},
+      {t:'direction', text:'Tagebucheintrag — 8.07.27'},
+      {t:'dialog', char:'Elias (unterlegt, Stimme aus dem Off)', text:'Heute hat mein Boss mich wieder angeschrien und beleidigt, obwohl ich eigentlich am meisten in meiner ganzen Abteilung arbeite. Ich habe die Kontrolle verloren und bin abgehauen. Und dann, an diesem Fluss, war der Moment, wo ich einfach nicht mehr konnte und mir überlegt habe, alles hinzuschmeißen... Ich kann das alles nicht mehr.'}
+    ]
+  },
+  {
+    id:'szene4', tag:'Szene 4', title:'Die Antwort', loc:'Elias\' Wohnung — Funkraum',
+    roles:['Erzähler','Elias','Stimme Freund'],
+    direction:'Nächster Morgen. Ein Lämpchen an der Funkanlage blinkt. Elias springt auf, zeichnet die eingehende Nachricht auf.',
+    blocks:[
+      {t:'dialog', char:'Stimme Freund', text:'Hallo Elias,\nes fällt mir schwer, diese Nachricht zu schreiben. All die Jahre habe ich mitgelesen, was dich bedrückt. Jetzt habe ich den Entschluss getroffen, dich anzuschreiben und dir zu sagen: Egal was andere denken, du bist genau richtig wie du bist! Lass dich nicht unterkriegen. Du bist nicht allein.\nPS: Schreibe mir nicht mehr zurück!\nDein F.'},
+      {t:'direction', text:'Elias\' Miene hellt sich auf — verdunkelt sich dann wieder. Er zerreißt die Nachricht, wirft sie ins Feuer.'},
+      {t:'narrator', char:'Erzähler', text:'Was jetzt passiert ist, mag komisch erscheinen, ist aber verständlich. Denn Elias wollte immer einen Freund — jetzt hat er einen gefunden, aber anscheinend Tausende Lichtjahre entfernt und nicht erreichbar.'}
+    ]
+  },
+  {
+    id:'szene5', tag:'Szene 5', title:'Die Auflösung', loc:'Garten · Nachbarhaus',
+    roles:['Erzähler','Elias','Freund'],
+    direction:'Erzähler stößt den langweiligen Abspann weg. Elias läuft in den Garten und entdeckt: Das Signal wurde durch eine alte Schüssel zum Nachbarhaus umgeleitet.',
+    blocks:[
+      {t:'narrator', char:'Erzähler', text:'Was schaut ihr mich jetzt so an? Klar, das ist kein Happy End, aber die gibt es ja auch selten im echten Leben. Na gut, vielleicht lässt sich noch etwas machen — für einen saftigen Applaus am Ende!'},
+      {t:'direction', text:'Elias klopft. Freund öffnet. Sie reden, umarmen sich. Dann liegen beide im Gras, schauen in den Himmel.'},
+      {t:'dialog', char:'Freund', text:'Ich bin so froh, dass wir einander kennengelernt haben.'},
+      {t:'dialog', char:'Elias', text:'Ich auch! Und ich dachte, ich schreibe Aliens an!'},
+      {t:'dialog', char:'Elias', text:'Aber manchmal, ganz selten, stelle ich mir doch vor, dass dort etwas ist, da oben...'},
+      {t:'dialog', char:'Freund', text:'Das sitzt dann da und schaut lächelnd auf uns herab.'},
+      {t:'dialog', char:'Elias', text:'Wer weiß. Vielleicht reicht es manchmal, einfach nicht aufzuhören zu senden.'},
+      {t:'direction', text:'Stille. Lange Pause. Der Erzähler tritt ins Bild — diesmal ohne Ironie.'},
+      {t:'narrator', char:'Erzähler', text:'Na also. Hab ich\'s doch noch hingekriegt. Für euch. (kurze Pause, fast zu sich selbst) Vielleicht braucht es manchmal einfach nur jemanden, der… nicht aufhört zu senden.'}
+    ]
+  }
+];
+
+const ROLES = [
+  { id:'elias', name:'Elias', type:'Hauptrolle', age:'27 Jahre', desc:'Informatikstudent, introvertiert, schüchtern. Kommuniziert mit der Welt über Morsezeichen — und findet so unerwartet Anschluss.', scenes:['szene1','szene3','szene4','szene5'] },
+  { id:'erzaehler', name:'Erzähler', type:'Hauptrolle', age:'—', desc:'Meta-Erzähler, der direkt in die Kamera spricht. Ironisch, fast kühl — bis er am Ende selbst berührt ist.', scenes:['vorspann','szene1','szene2','szene3','szene4','szene5'] },
+  { id:'freund', name:'Freund / „F."', type:'Nebenrolle', age:'ca. 30', desc:'Elias\' Nachbar. Hat jahrelang seine Funksignale empfangen und eines Tages geantwortet. Warm, offen, der Auflöser des Films.', scenes:['szene4','szene5'] },
+  { id:'sandra', name:'Sandra', type:'Kleinrolle', age:'34 Jahre', desc:'Kletterin. Kontrastfigur zu Elias im Intro — aktiv, zugehörig, in ihrem Element.', scenes:['szene1'] },
+  { id:'fred', name:'Fred', type:'Kleinrolle', age:'14 Jahre', desc:'DLRG-Schwimmer. Weitere Kontrastfigur im Marienplatz-Intro.', scenes:['szene1'] },
+  { id:'jungelias', name:'Junger Elias', type:'Flashback', age:'ca. 8–10', desc:'Elias als Kind. Schüchtern, möchte mitspielen, wird abgelehnt. Piepsstimme.', scenes:['szene2'] },
+  { id:'jungRaudi', name:'Junger Raudi', type:'Flashback', age:'ca. 8–10', desc:'Anführer der Kindergruppe, lehnt Elias ab und macht ihn lächerlich.', scenes:['szene2'] }
+];
+
+const MATS = {
+  vorspann: {
+    'Kamera & Technik':['High-Res Kamera für Weltraumreferenz','Greenscreen (optional)','Projektor Sternenhimmel'],
+    'Ton & Sound':['Synthesizer / Sound-Design für Piepen','Wellenform-Equipment'],
+    'VFX / Post':['Sternen-Footage (lizenzfrei)','After Effects — Wellenanimation','Morsezeichen-Visualisierung']
+  },
+  szene1: {
+    'Requisiten':['Einkaufstüten (überfüllt, mehrere)','Rohe Eier (mehrere, Ersatz)','Klettergurt & Klettergriffe','Anzug für Statisten'],
+    'Kostüm':['Kletteroutfit (Sandra)','Schwimmkleidung + Badekappe (Fred)','Unscheinbarer Alltagsoutfit (Elias)'],
+    'Kamera':['Kamera mit Zoom-Objektiv','Gimbal Stabilizer'],
+    'Location':['Drehgenehmigung Marienplatz','Kletterhallen-Buchung','Schwimmbad-Absprache'],
+    'Ton':['Lavalier-Mikrofon (Erzähler)','Atmo-Aufnahmen Marktplatz']
+  },
+  szene2: {
+    'Requisiten':['Spielplatz-Kulisse','Laufkleidung für Kinder'],
+    'Kostüm':['Kinderkostüme 90er/2000er','Sportoutfit (Joggen)'],
+    'Kamera':['Weitwinkelobj.','Handkamera Verfolgung'],
+    'Ton':['Kinder-Atmo','Emotionaler Soundtrack (lizenzfrei / Original)'],
+    'Statisterie':['5–8 Kinderdarsteller für Fangengruppe']
+  },
+  szene3: {
+    'Requisiten':['Vintage-Funkanlage / Morseschlüssel (Requisite)','Kerzen','Foto des Universums A4 gedruckt','Tagebücher / Notizbücher','Charaktervoller Schreibtisch'],
+    'Kostüm':['Elias: häusliches Outfit'],
+    'Kamera':['Macro-Objektiv (Morse-Taste-Close-Up)','Stativ'],
+    'Ton':['Morsetöne','Funkrauschen'],
+    'Licht':['Kerzenlicht-Simulation','Amber-Gel','LED-Blink-System für Funkgerät']
+  },
+  szene4: {
+    'Requisiten':['Funkanlage mit LED-Lämpchen (steuerbar)','Papier & Stift für Morse-Aufzeichnung','Kamin oder Feuerschale','Papier zum Zerreißen (mehrere Kopien)'],
+    'Kostüm':['Elias: Schlafanzug / Morgenkleidung'],
+    'Ton':['Kitschige Untermalung','Funksignal','Feuerknistern'],
+    'Licht':['Feuerfladder-Simulation','Warmes Seitenlicht']
+  },
+  szene5: {
+    'Requisiten':['Gartenmöbel','Alte Parabolantenne','Decke fürs Gras-Liegen','Abspann-Rolle (Witz-Requisite)'],
+    'Kostüm':['Elias: casual Outdoor','Freund: offen, warm wirkend'],
+    'Kamera':['Drohne (optional, Luftaufnahme)','Gimbal oder Kranarm'],
+    'Ton':['Warmer Soundtrack','Naturgeräusche Garten'],
+    'Licht':['Goldene Stunde bevorzugt','Reflektor']
+  }
+};
+
+// ═══════════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════════
+const SB_URL = 'https://iysgcpubexdnfyzemkhu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5c2djcHViZXhkbmZ5emVta2h1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NjgyOTQsImV4cCI6MjA5NzE0NDI5NH0.SsEm3cYnAo4OREno5JoFDut5QgmsDm3XQttMeC4zMq4';
+
+const TEAM_PASSWORD = '8bfilms2025'; // ← Hier dein Teampasswort ändern
+
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(SB_URL + '/rest/v1/' + path, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...opts.headers
+    },
+    ...opts
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+// ═══════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════
+function checkLogin() {
+  const val = document.getElementById('pwInput').value;
+  if (val === TEAM_PASSWORD) {
+    document.getElementById('loginOverlay').style.display = 'none';
+    sessionStorage.setItem('kl_auth', '1');
+  } else {
+    document.getElementById('loginError').textContent = 'Falsches Passwort.';
+    document.getElementById('pwInput').value = '';
+  }
+}
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let activeTab = 'drehbuch';
+let selectedRole = null;
+let newSceneSel = [];
+let addOpen = false;
+let days = [];
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  // Passwortschutz
+  if (sessionStorage.getItem('kl_auth') === '1') {
+    document.getElementById('loginOverlay').style.display = 'none';
+  }
+
+  buildSidebar();
+  buildScript();
+  buildRoles();
+  buildMatPicker();
+  buildNewSceneTags();
+  await loadDays();
+});
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.nav-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['drehbuch','rollen','drehtage','material'][i] === tab);
+  });
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + tab).classList.add('active');
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════
+function buildSidebar() {
+  document.getElementById('sideScenes').innerHTML = SCENES.map(s => `
+    <a class="scene-link" id="sl-${s.id}" onclick="goScene('${s.id}')">
+      <div class="sl-tag">${s.tag}</div>
+      <div class="sl-name">${s.title}</div>
+      <div class="sl-loc">${s.loc}</div>
+    </a>
+  `).join('');
+}
+
+function goScene(id) {
+  if (activeTab !== 'drehbuch') switchTab('drehbuch');
+  document.querySelectorAll('.scene-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('sl-' + id)?.classList.add('active');
+  setTimeout(() => {
+    document.getElementById('sb-' + id)?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 60);
+}
+
+// ═══════════════════════════════════════════
+// DREHBUCH
+// ═══════════════════════════════════════════
+function buildScript() {
+  document.getElementById('scriptContent').innerHTML = SCENES.map(s => {
+    const tagPills = s.roles.map(r => `<span class="role-tag">${r}</span>`).join('');
+    const blocks = s.blocks.map(b => {
+      if (b.t === 'direction') return `<div class="sb-direction">${b.text}</div>`;
+      if (b.t === 'narrator') return `<div class="sb-narrator"><div class="sb-narrator-char">${b.char}</div><div class="sb-narrator-text">${b.text}</div></div>`;
+      if (b.t === 'dialog') return `<div class="sb-dialog"><div class="sb-dialog-char">${b.char}</div><div class="sb-dialog-text">${b.text.replace(/\n/g,'<br>')}</div></div>`;
+      return '';
+    }).join('');
+
+    return `
+      <div class="script-block" id="sb-${s.id}">
+        <div class="sb-head">
+          <div class="sb-num">${s.tag}</div>
+          <div class="sb-title">${s.title}</div>
+          <div class="sb-loc">${s.loc}</div>
+        </div>
+        <div class="sb-rule"></div>
+        ${s.roles.length ? `<div style="margin-bottom:20px">${tagPills}</div>` : ''}
+        ${blocks}
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// ROLLEN
+// ═══════════════════════════════════════════
+function buildRoles() {
+  document.getElementById('rolesGrid').innerHTML = ROLES.map(r => `
+    <div class="role-card ${selectedRole===r.id?'selected':''}" onclick="pickRole('${r.id}')">
+      <div class="rc-type">${r.type}</div>
+      <div class="rc-name">${r.name}</div>
+      <div class="rc-age">${r.age}</div>
+      <div class="rc-desc">${r.desc}</div>
+      <div class="rc-scenes">Szenen: ${r.scenes.map(sid => SCENES.find(s=>s.id===sid)?.tag||sid).join(' · ')}</div>
+    </div>
+  `).join('');
+  buildRoleResult();
+}
+
+function pickRole(id) {
+  selectedRole = selectedRole === id ? null : id;
+  buildRoles();
+}
+
+function buildRoleResult() {
+  const el = document.getElementById('roleResult');
+  if (!selectedRole) { el.innerHTML=''; return; }
+  const role = ROLES.find(r=>r.id===selectedRole);
+  const sceneBlocks = SCENES.filter(s => role.scenes.includes(s.id)).map(s => {
+    const blocks = s.blocks.map(b => {
+      const mine = b.char && b.char.toLowerCase().includes(role.name.toLowerCase().split(' ')[0]);
+      if (b.t === 'direction') return `<div class="sb-direction">${b.text}</div>`;
+      if (b.t === 'narrator') return `<div class="sb-narrator"><div class="sb-narrator-char" style="${mine?'color:var(--gold)':''}">${b.char}</div><div class="sb-narrator-text">${b.text}</div></div>`;
+      if (b.t === 'dialog') return `<div class="sb-dialog" style="${mine?'border-left:3px solid var(--gold)':''}"><div class="sb-dialog-char" style="${mine?'color:var(--gold)':''}">${b.char}</div><div class="sb-dialog-text">${b.text.replace(/\n/g,'<br>')}</div></div>`;
+      return '';
+    }).join('');
+    return `<div class="script-block"><div class="sb-head"><div class="sb-num">${s.tag}</div><div class="sb-title">${s.title}</div></div><div class="sb-rule"></div>${blocks}</div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="rule" style="margin-top:0"></div>
+    <div class="role-result-head">Szenen mit ${role.name}</div>
+    <div class="role-result-sub">Markierte Dialoge gehören zu dieser Rolle.</div>
+    <button class="clear-filter" onclick="pickRole(null)">↩ Alle Rollen anzeigen</button>
+    ${sceneBlocks}
+  `;
+}
+
+// ═══════════════════════════════════════════
+// DREHTAGE
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// DREHTAGE — SUPABASE
+// ═══════════════════════════════════════════
+
+async function loadDays() {
+  document.getElementById('daysList').innerHTML = '<div class="empty"><div class="empty-icon" style="animation:breathe 1.5s infinite">✦</div><div class="empty-text">Lädt…</div></div>';
+  try {
+    const data = await sbFetch('drehtage?order=date.asc');
+    days = data.map(d => ({ ...d, scenes: d.scenes ? d.scenes.split(',').filter(Boolean) : [] }));
+    buildDays();
+  } catch(e) {
+    document.getElementById('daysList').innerHTML = '<div class="empty"><div class="empty-text">Verbindungsfehler</div><div class="empty-sub">Supabase nicht erreichbar.</div></div>';
+  }
+}
+
+function buildDays() {
+  const el = document.getElementById('daysList');
+  if (!days.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">✦</div><div class="empty-text">Noch keine Drehtage</div><div class="empty-sub">Lege oben deinen ersten Drehtag an.</div></div>';
+    return;
+  }
+  const stLabel = { planned:'Geplant', done:'Abgedreht', pending:'Offen' };
+  el.innerHTML = days.map((d,i) => {
+    const dateStr = d.date ? new Date(d.date+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}) : '—';
+    const sceneNames = d.scenes.map(sid=>SCENES.find(s=>s.id===sid)?.tag||sid).join(' · ');
+    return `
+      <div class="day-card" id="dc-${d.id}">
+        <div class="day-card-head" onclick="toggleDay(${d.id})">
+          <div class="day-num-badge">${i+1}</div>
+          <div>
+            <div class="day-info-date">${dateStr}</div>
+            <div class="day-info-sub">${d.loc} · ${d.start}–${d.end} Uhr${sceneNames?'<br>'+sceneNames:''}</div>
+          </div>
+          <div class="day-status status-${d.status}">${stLabel[d.status]||d.status}</div>
+          <div class="day-chevron">⌄</div>
+        </div>
+        <div class="day-body">
+          <div class="field-grid">
+            <div>
+              <div class="field-label">Datum</div>
+              <input class="field-input" type="date" value="${d.date||''}" onchange="updateDayField(${d.id},'date',this.value)">
+            </div>
+            <div>
+              <div class="field-label">Drehort</div>
+              <input class="field-input" type="text" value="${d.loc||''}" onchange="updateDayField(${d.id},'loc',this.value)">
+            </div>
+            <div>
+              <div class="field-label">Beginn</div>
+              <input class="field-input" type="time" value="${d.start||''}" onchange="updateDayField(${d.id},'start',this.value)">
+            </div>
+            <div>
+              <div class="field-label">Ende</div>
+              <input class="field-input" type="time" value="${d.end||''}" onchange="updateDayField(${d.id},'end',this.value)">
+            </div>
+            <div>
+              <div class="field-label">Status</div>
+              <select class="field-select" onchange="updateDayField(${d.id},'status',this.value)">
+                <option value="planned" ${d.status==='planned'?'selected':''}>Geplant</option>
+                <option value="pending" ${d.status==='pending'?'selected':''}>Offen</option>
+                <option value="done" ${d.status==='done'?'selected':''}>Abgedreht</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label">Szenen</div>
+              <div class="scene-tags-wrap">
+                ${SCENES.map(s=>`<span class="stag ${d.scenes.includes(s.id)?'on':''}" onclick="toggleDayScene(${d.id},'${s.id}',this)">${s.tag}</span>`).join('')}
+              </div>
+            </div>
+            <div class="span2">
+              <div class="field-label">Notizen</div>
+              <textarea class="field-textarea" onchange="updateDayField(${d.id},'notes',this.value)">${d.notes||''}</textarea>
+            </div>
+          </div>
+          <div class="day-actions">
+            <button class="act-btn act-btn-primary" onclick="saveDay(${d.id})">Speichern</button>
+            <button class="act-btn act-btn-danger" onclick="deleteDay(${d.id})">Löschen</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleDay(id) {
+  document.getElementById('dc-'+id)?.classList.toggle('open');
+}
+
+function updateDayField(id, field, val) {
+  const d = days.find(x=>x.id===id);
+  if (d) d[field] = val;
+}
+
+function toggleDayScene(id, sid, el) {
+  const d = days.find(x=>x.id===id);
+  if (!d) return;
+  if (d.scenes.includes(sid)) d.scenes = d.scenes.filter(s=>s!==sid);
+  else d.scenes.push(sid);
+  el.classList.toggle('on');
+}
+
+async function saveDay(id) {
+  const d = days.find(x=>x.id===id);
+  if (!d) return;
+  try {
+    await sbFetch(`drehtage?id=eq.${id}`, {
+      method: 'PATCH',
+      prefer: 'return=minimal',
+      body: JSON.stringify({
+        date: d.date, loc: d.loc, start: d.start,
+        end: d.end, status: d.status, notes: d.notes,
+        scenes: d.scenes.join(',')
+      })
+    });
+    await loadDays();
+    toast('Gespeichert');
+  } catch(e) { toast('Fehler beim Speichern'); }
+}
+
+async function deleteDay(id) {
+  if (!confirm('Drehtag wirklich löschen?')) return;
+  try {
+    await sbFetch(`drehtage?id=eq.${id}`, { method: 'DELETE', prefer: 'return=minimal' });
+    await loadDays();
+    toast('Drehtag gelöscht');
+  } catch(e) { toast('Fehler beim Löschen'); }
+}
+
+function toggleAdd() {
+  addOpen = !addOpen;
+  document.getElementById('addPanel').classList.toggle('open', addOpen);
+}
+
+function buildNewSceneTags() {
+  document.getElementById('newSceneTags').innerHTML = SCENES.map(s =>
+    `<span class="stag" onclick="toggleNewScene('${s.id}',this)">${s.tag}</span>`
+  ).join('');
+}
+
+function toggleNewScene(id, el) {
+  if (newSceneSel.includes(id)) newSceneSel = newSceneSel.filter(s=>s!==id);
+  else newSceneSel.push(id);
+  el.classList.toggle('on');
+}
+
+async function addDay() {
+  const date  = document.getElementById('nDate').value;
+  const loc   = document.getElementById('nLoc').value;
+  const start = document.getElementById('nStart').value;
+  const end   = document.getElementById('nEnd').value;
+  const notes = document.getElementById('nNotes').value;
+  if (!date || !loc) { toast('Datum und Drehort angeben'); return; }
+  try {
+    await sbFetch('drehtage', {
+      method: 'POST',
+      body: JSON.stringify({ date, loc, start, end, notes, status:'planned', scenes: newSceneSel.join(',') })
+    });
+    ['nDate','nLoc','nNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('nStart').value='08:00';
+    document.getElementById('nEnd').value='18:00';
+    newSceneSel=[];
+    document.querySelectorAll('#newSceneTags .stag').forEach(e=>e.classList.remove('on'));
+    toggleAdd();
+    await loadDays();
+    toast('Drehtag angelegt');
+  } catch(e) { toast('Fehler beim Anlegen'); }
+}
+
+// ═══════════════════════════════════════════
+// MATERIAL
+// ═══════════════════════════════════════════
+function buildMatPicker() {
+  document.getElementById('matPicker').innerHTML = SCENES.filter(s=>MATS[s.id]).map(s =>
+    `<button class="scene-chip" onclick="pickMat('${s.id}')">${s.tag}</button>`
+  ).join('');
+}
+
+const catIcon = c => ({'Kamera & Technik':'🎥','Kamera':'🎥','Ton & Sound':'🎙️','Ton':'🎙️','VFX / Post':'✨','Requisiten':'🎭','Kostüm':'👔','Location':'📍','Licht':'💡','Statisterie':'👥'}[c]||'✦');
+
+function pickMat(id) {
+  document.querySelectorAll('.scene-chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.scene-chip[onclick="pickMat('${id}')"]`)?.classList.add('active');
+  const mats = MATS[id];
+  const scene = SCENES.find(s=>s.id===id);
+  if (!mats) return;
+  document.getElementById('matContent').innerHTML = `
+    <div class="mat-section-title">${scene.tag} — ${scene.title}</div>
+    <div class="mat-section-sub">${scene.loc}</div>
+    <div class="mat-grid">
+      ${Object.entries(mats).map(([cat,items])=>`
+        <div class="mat-cat">
+          <div class="mat-cat-head">
+            <span class="mat-cat-icon">${catIcon(cat)}</span>
+            <span class="mat-cat-name">${cat}</span>
+          </div>
+          <div class="mat-items">
+            ${items.map(item=>`<div class="mat-item"><div class="mat-bullet"></div>${item}</div>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
